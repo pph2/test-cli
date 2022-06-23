@@ -1,13 +1,16 @@
 #!/usr/bin/env node
-const chalk = require('chalk');
-const { Command } = require('commander');
-const minimist = require('minimist');
-
-const package = require('../package.json');
-const { create } = require('../lib/logger')
+import chalk from 'chalk';
+import { Command } from 'commander';
+import minimist from 'minimist';
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const pack =  require('../package.json')
+// import pack from '../package.json' assert { type: 'json' };
+import { create } from '../lib/logger.js'
+import { asyncCatchErrorHof } from '../lib/error.js'
 
 // 获取package.version
-const { version } = package;
+const { version } = pack;
 const program = new Command()
 
 // 定义当前版本
@@ -28,7 +31,7 @@ program
       const info = `Info: You provided more than one argument. The first one will be used as the app's name, the rest are ignored.`
       console.log(chalk.yellow(info))
     }
-    create(name, options)
+    asyncCatchErrorHof(create(name, options))
   });
 
 // 解析运行参数(必须且要放在最后一行)
