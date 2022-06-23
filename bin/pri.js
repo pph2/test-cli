@@ -4,6 +4,7 @@ const { Command } = require('commander');
 const minimist = require('minimist');
 
 const package = require('../package.json');
+const { create } = require('../lib/logger')
 
 // 获取package.version
 const { version } = package;
